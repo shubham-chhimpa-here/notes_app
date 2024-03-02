@@ -12,6 +12,7 @@ blogRouter.get('/', async (req,res) => {
 
 blogRouter.post('/create', async (req, res) => {
     const { title, content, userId } = req.body;
+    console.log(req.body)
     const blog = BlogModel({title, content, userId});
     const response = await blog.save()
     res.send({msg: 'new blog has been added', response})
