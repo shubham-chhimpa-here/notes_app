@@ -1,15 +1,24 @@
 const { verify } = require("jsonwebtoken")
 
 const userAuth = (req, res, next) => {
-    const token = req.cookies['token'];
+    const {authorization} = req.headers;
+
+    if(authorization.includes('Bearer')) {
+          const token = authorization.split('Bearer ')[1];
 
     verify(token, process.env.jwtKey, (err, payload) => {
         if(err) res.send({msg: 'login first'});
-        
-        req.body = {...req.body , userId: payload.userId}
-        next()
+        else {
+            req.body = {...req.body , userId: payload.userId}
+            next()
+        }
     })
-    
+    }
+    else {
+        res.send({msg: 'send cookies '})
+
+    }
+  
     
 
 }

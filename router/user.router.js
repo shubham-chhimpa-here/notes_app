@@ -32,23 +32,30 @@ userRouter.post('/register', async (req, res) => {
 // Login a user and send token for private/protected routes
 userRouter.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }); 
     if (user) {
         const isAuth = compareSync(password, user.password)
         if (isAuth) {
 
             const token = sign({ username: user.username, email: user.email, userId: user._id }, process.env.jwtKey, { expiresIn: '24h' })
-            res.cookie('token', token);
-            res.send('user logged in')
+        
+            res.cookie('token', token, {
+                httpOnly: false,
+                secure: true,
+                maxAge: 900000
+            });
+            res.send({msg: 'user logged in', token})
         }
         else {
-            res.send('wrong password')
+            res.send({msg: 'wrong password'})
         }
     }
     else {
         res.send({ msg: 'user not found' })
     }
 })
+
+
 
 userRouter.delete('/', async (req, res) => {
     const x = req.query;

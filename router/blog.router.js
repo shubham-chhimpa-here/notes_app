@@ -7,7 +7,7 @@ blogRouter.get('/', async (req,res) => {
     const {userId} = req.body;
     const data = await BlogModel.find({ userId : userId});
     
-    res.send({msg: 'blog data..', data})
+    res.send({msg: 'blog data', login: true , data})
 })
 
 blogRouter.post('/create', async (req, res) => {
