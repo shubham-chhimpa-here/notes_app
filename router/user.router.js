@@ -32,7 +32,6 @@ userRouter.post('/register', async (req, res) => {
 // Login a user and send token for private/protected routes
 userRouter.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body)
     const user = await UserModel.findOne({ email }); 
     if (user) {
         const isAuth = compareSync(password, user.password)
@@ -48,11 +47,11 @@ userRouter.post('/login', async (req, res) => {
             res.send({msg: 'user logged in',status: true ,token}) 
         }
         else {
-            res.send({msg: 'wrong password'})
+            res.send({msg: 'wrong password', status: false})
         }
     }
     else {
-        res.send({ msg: 'user not found' })
+        res.send({ msg: 'user not found', status: false })
     }
 })
 
