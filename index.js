@@ -13,7 +13,7 @@ require('dotenv').config() //envirnment variables
 const PORT = process.env.PORT;
 
 app.use(cors({
-    origin: '*',
+    origin: process.env.frontend_url,
     credentials: "true",
 }))
 app.use(cookieParser())
